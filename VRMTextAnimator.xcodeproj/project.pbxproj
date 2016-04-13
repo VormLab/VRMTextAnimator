@@ -8,11 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		4E7DAECC1CBE3BFF00D48EB9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7DAECB1CBE3BFF00D48EB9 /* AppDelegate.swift */; };
-		4E7DAECE1CBE3BFF00D48EB9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7DAECD1CBE3BFF00D48EB9 /* ViewController.swift */; };
 		4E7DAED11CBE3BFF00D48EB9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E7DAECF1CBE3BFF00D48EB9 /* Main.storyboard */; };
 		4E7DAED31CBE3BFF00D48EB9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4E7DAED21CBE3BFF00D48EB9 /* Assets.xcassets */; };
 		4E7DAED61CBE3BFF00D48EB9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E7DAED41CBE3BFF00D48EB9 /* LaunchScreen.storyboard */; };
 		4E7DAEE11CBE3BFF00D48EB9 /* VRMTextAnimatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7DAEE01CBE3BFF00D48EB9 /* VRMTextAnimatorTests.swift */; };
+		4E7DAEEE1CBE3CA700D48EB9 /* VRMSliderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7DAEEB1CBE3CA700D48EB9 /* VRMSliderViewController.swift */; };
+		4E7DAEEF1CBE3CA700D48EB9 /* VRMTextAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7DAEEC1CBE3CA700D48EB9 /* VRMTextAnimator.swift */; };
+		4E7DAEF01CBE3CA700D48EB9 /* VRMViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7DAEED1CBE3CA700D48EB9 /* VRMViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,7 +30,6 @@
 /* Begin PBXFileReference section */
 		4E7DAEC81CBE3BFF00D48EB9 /* VRMTextAnimator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VRMTextAnimator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E7DAECB1CBE3BFF00D48EB9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		4E7DAECD1CBE3BFF00D48EB9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4E7DAED01CBE3BFF00D48EB9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4E7DAED21CBE3BFF00D48EB9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4E7DAED51CBE3BFF00D48EB9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -36,6 +37,9 @@
 		4E7DAEDC1CBE3BFF00D48EB9 /* VRMTextAnimatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VRMTextAnimatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E7DAEE01CBE3BFF00D48EB9 /* VRMTextAnimatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VRMTextAnimatorTests.swift; sourceTree = "<group>"; };
 		4E7DAEE21CBE3BFF00D48EB9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4E7DAEEB1CBE3CA700D48EB9 /* VRMSliderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VRMSliderViewController.swift; sourceTree = "<group>"; };
+		4E7DAEEC1CBE3CA700D48EB9 /* VRMTextAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VRMTextAnimator.swift; sourceTree = "<group>"; };
+		4E7DAEED1CBE3CA700D48EB9 /* VRMViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VRMViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,7 +82,9 @@
 			isa = PBXGroup;
 			children = (
 				4E7DAECB1CBE3BFF00D48EB9 /* AppDelegate.swift */,
-				4E7DAECD1CBE3BFF00D48EB9 /* ViewController.swift */,
+				4E7DAEEB1CBE3CA700D48EB9 /* VRMSliderViewController.swift */,
+				4E7DAEED1CBE3CA700D48EB9 /* VRMViewController.swift */,
+				4E7DAEEC1CBE3CA700D48EB9 /* VRMTextAnimator.swift */,
 				4E7DAECF1CBE3BFF00D48EB9 /* Main.storyboard */,
 				4E7DAED21CBE3BFF00D48EB9 /* Assets.xcassets */,
 				4E7DAED41CBE3BFF00D48EB9 /* LaunchScreen.storyboard */,
@@ -197,7 +203,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4E7DAECE1CBE3BFF00D48EB9 /* ViewController.swift in Sources */,
+				4E7DAEEE1CBE3CA700D48EB9 /* VRMSliderViewController.swift in Sources */,
+				4E7DAEF01CBE3CA700D48EB9 /* VRMViewController.swift in Sources */,
+				4E7DAEEF1CBE3CA700D48EB9 /* VRMTextAnimator.swift in Sources */,
 				4E7DAECC1CBE3BFF00D48EB9 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
