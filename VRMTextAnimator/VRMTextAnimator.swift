@@ -20,6 +20,7 @@ public class VRMTextAnimator: NSObject {
     public var fontName         = "Avenir"
     public var fontSize         : CGFloat = 50.0
     public var textToAnimate    = "Hello Swift!"
+    public var textColor        = UIColor.redColor().CGColor
     public var delegate         : VRMTextAnimatorDelegate?
     
     private var animationLayer  = CALayer()
@@ -93,7 +94,7 @@ public class VRMTextAnimator: NSObject {
         pathLayer.geometryFlipped   = true
         pathLayer.path              = path.CGPath
         pathLayer.strokeColor       = UIColor.blackColor().CGColor
-        pathLayer.fillColor         = nil
+        pathLayer.fillColor         = textColor
         pathLayer.lineWidth         = 1.0
         pathLayer.lineJoin          = kCALineJoinBevel
         
@@ -103,16 +104,23 @@ public class VRMTextAnimator: NSObject {
     }
     
     public func startAnimation() {
+        let duration = 4.0
         pathLayer?.removeAllAnimations()
         setupPathLayerWithText(textToAnimate, fontName: fontName, fontSize: fontSize)
         
         let pathAnimation       = CABasicAnimation(keyPath: "strokeEnd")
-        pathAnimation.duration  = 4.0
+        pathAnimation.duration  = duration
         pathAnimation.fromValue = 0.0
         pathAnimation.toValue   = 1.0
         pathAnimation.delegate  = self
         pathLayer?.addAnimation(pathAnimation, forKey: "strokeEnd")
-    
+        
+        let coloringDuration        = 2.0
+        let colorAnimation          = CAKeyframeAnimation(keyPath: "fillColor")
+        colorAnimation.duration     = duration + coloringDuration
+        colorAnimation.values       = [UIColor.clearColor().CGColor, UIColor.clearColor().CGColor, textColor]
+        colorAnimation.keyTimes     = [0, (duration/(duration + coloringDuration)), 1]
+        pathLayer?.addAnimation(colorAnimation, forKey: "fillColor")
     }
     
     public func stopAnimation() {
