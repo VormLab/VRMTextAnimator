@@ -29,9 +29,30 @@ class VRMViewController: UIViewController {
         }
     }
     
-    @IBOutlet weak var startAnimationButton     : UIButton!
-    @IBOutlet weak var stopAnimationButton      : UIButton!
-    @IBOutlet weak var clearTextButton          : UIButton!
+    @IBOutlet weak var startAnimationButton     : UIButton! {
+        didSet {
+            startAnimationButton.layer.cornerRadius     = 8.0
+            startAnimationButton.layer.borderWidth      = 1.0
+            startAnimationButton.layer.borderColor      = UIColor.whiteColor().CGColor
+            startAnimationButton.layer.masksToBounds    = true
+        }
+    }
+    @IBOutlet weak var stopAnimationButton      : UIButton! {
+        didSet {
+            stopAnimationButton.layer.cornerRadius      = 8.0
+            stopAnimationButton.layer.borderWidth       = 1.0
+            stopAnimationButton.layer.borderColor       = UIColor.whiteColor().CGColor
+            stopAnimationButton.layer.masksToBounds     = true
+        }
+    }
+    @IBOutlet weak var clearTextButton          : UIButton! {
+        didSet {
+            clearTextButton.layer.cornerRadius          = 8.0
+            clearTextButton.layer.borderWidth           = 1.0
+            clearTextButton.layer.borderColor           = UIColor.whiteColor().CGColor
+            clearTextButton.layer.masksToBounds         = true
+        }
+    }
     
     
     var textAnimator                            : VRMTextAnimator?
@@ -146,12 +167,14 @@ extension VRMViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         return UIFont.familyNames().count
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return UIFont.familyNames()[row]
-    }
-    
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         chosenFontName = UIFont.familyNames()[row]
+    }
+    
+    func pickerView(pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        let currentTitle    = UIFont.familyNames()[row]
+        let attributes      = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        return NSAttributedString(string: currentTitle, attributes: attributes)
     }
 }
 
