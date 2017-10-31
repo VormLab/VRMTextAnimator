@@ -23,14 +23,14 @@ class VRMSliderViewController: UIViewController {
         super.viewDidLoad()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         view.layoutIfNeeded()
         initTextAnimator()
         slider.value = 0
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         textAnimator = nil
     }
@@ -44,9 +44,9 @@ class VRMSliderViewController: UIViewController {
     
     // MARK: IBActions
     
-    @IBAction func didChangeSliderValue(sender: UISlider) {
+    @IBAction func didChangeSliderValue(_ sender: UISlider) {
         guard let textAnimator = textAnimator else { return }
-        textAnimator.updatePathStrokeWithValue(sender.value)
+        textAnimator.updatePathStrokeWithValue(value: sender.value)
     }
 
 }

@@ -10,17 +10,17 @@ import UIKit
 import CoreFoundation
 
 public protocol VRMTextAnimatorDelegate {
-    func textAnimator(textAnimator: VRMTextAnimator, animationDidStart animation: CAAnimation)
-    func textAnimator(textAnimator: VRMTextAnimator, animationDidStop animation: CAAnimation)
+    func textAnimator(_ textAnimator: VRMTextAnimator, animationDidStart animation: CAAnimation)
+    func textAnimator(_ textAnimator: VRMTextAnimator, animationDidStop animation: CAAnimation)
 }
 
-public class VRMTextAnimator: NSObject {
+public class VRMTextAnimator: NSObject, CAAnimationDelegate {
     
     // MARK: Properties
-    public var fontName         = "Avenir"
+    public var fontName         = "Helvetica"
     public var fontSize         : CGFloat = 50.0
-    public var textToAnimate    = "Hello Swift!"
-    public var textColor        = UIColor.redColor().CGColor
+    public var textToAnimate    = "HelloSwift!"
+    public var textColor        = UIColor.red.cgColor
     public var delegate         : VRMTextAnimatorDelegate?
     
     private var animationLayer  = CALayer()
@@ -43,7 +43,7 @@ public class VRMTextAnimator: NSObject {
         animationLayer          = CALayer()
         animationLayer.frame    = referenceView.bounds
         referenceView.layer.addSublayer(animationLayer)
-        setupPathLayerWithText(textToAnimate, fontName: fontName, fontSize: fontSize)
+        setupPathLayerWithText(text: textToAnimate, fontName: fontName, fontSize: fontSize)
     }
 
     // MARK: Animations
@@ -58,42 +58,42 @@ public class VRMTextAnimator: NSObject {
     private func setupPathLayerWithText(text: String, fontName: String, fontSize: CGFloat) {
         clearLayer()
         
-        let letters     = CGPathCreateMutable()
-        let font        = CTFontCreateWithName(fontName, fontSize, nil)
-        let attrString  = NSAttributedString(string: text, attributes: [kCTFontAttributeName as String : font])
+        let letters     = CGMutablePath()
+        let font        = CTFontCreateWithName(fontName as CFString, fontSize, nil)
+        let attrString  = NSAttributedString(string: text, attributes: [NSAttributedStringKey(rawValue: kCTFontAttributeName as String as String) : font])
         let line        = CTLineCreateWithAttributedString(attrString)
         let runArray    = CTLineGetGlyphRuns(line)
         
         for runIndex in 0..<CFArrayGetCount(runArray) {
             
-            let run     : CTRunRef =  unsafeBitCast(CFArrayGetValueAtIndex(runArray, runIndex), CTRunRef.self)
-            let dictRef : CFDictionaryRef = unsafeBitCast(CTRunGetAttributes(run), CFDictionaryRef.self)
+            let run     : CTRun =  unsafeBitCast(CFArrayGetValueAtIndex(runArray, runIndex), to: CTRun.self)
+            let dictRef : CFDictionary = CTRunGetAttributes(run)
             let dict    : NSDictionary = dictRef as NSDictionary
             let runFont = dict[kCTFontAttributeName as String] as! CTFont
             
             for runGlyphIndex in 0..<CTRunGetGlyphCount(run) {
                 let thisGlyphRange  = CFRangeMake(runGlyphIndex, 1)
                 var glyph           = CGGlyph()
-                var position        = CGPointZero
+                var position        = CGPoint.zero
                 CTRunGetGlyphs(run, thisGlyphRange, &glyph)
                 CTRunGetPositions(run, thisGlyphRange, &position)
                 
                 let letter          = CTFontCreatePathForGlyph(runFont, glyph, nil)
-                var t               = CGAffineTransformMakeTranslation(position.x, position.y)
-                CGPathAddPath(letters, &t, letter)
+                let t               = CGAffineTransform(translationX: position.x, y: position.y)
+                letters.addPath(letter!, transform: t)
             }
         }
         
         let path = UIBezierPath()
-        path.moveToPoint(CGPointZero)
-        path.appendPath(UIBezierPath(CGPath: letters))
+        path.move(to: CGPoint.zero)
+        path.append(UIBezierPath(cgPath: letters))
         
         let pathLayer               = CAShapeLayer()
         pathLayer.frame             = animationLayer.bounds;
-        pathLayer.bounds            = CGPathGetBoundingBox(path.CGPath)
-        pathLayer.geometryFlipped   = true
-        pathLayer.path              = path.CGPath
-        pathLayer.strokeColor       = UIColor.blackColor().CGColor
+        pathLayer.bounds            =  path.cgPath.boundingBox
+        pathLayer.isGeometryFlipped   = true
+        pathLayer.path              = path.cgPath
+        pathLayer.strokeColor       = UIColor.black.cgColor
         pathLayer.fillColor         = textColor
         pathLayer.lineWidth         = 1.0
         pathLayer.lineJoin          = kCALineJoinBevel
@@ -106,21 +106,22 @@ public class VRMTextAnimator: NSObject {
     public func startAnimation() {
         let duration = 4.0
         pathLayer?.removeAllAnimations()
-        setupPathLayerWithText(textToAnimate, fontName: fontName, fontSize: fontSize)
+        setupPathLayerWithText(text: textToAnimate, fontName: fontName, fontSize: fontSize)
         
         let pathAnimation       = CABasicAnimation(keyPath: "strokeEnd")
         pathAnimation.duration  = duration
         pathAnimation.fromValue = 0.0
         pathAnimation.toValue   = 1.0
-        pathAnimation.delegate  = self
-        pathLayer?.addAnimation(pathAnimation, forKey: "strokeEnd")
+        pathAnimation.delegate  = self as CAAnimationDelegate
+        pathLayer?.add(pathAnimation, forKey: "strokeEnd")
         
         let coloringDuration        = 2.0
         let colorAnimation          = CAKeyframeAnimation(keyPath: "fillColor")
         colorAnimation.duration     = duration + coloringDuration
-        colorAnimation.values       = [UIColor.clearColor().CGColor, UIColor.clearColor().CGColor, textColor]
-        colorAnimation.keyTimes     = [0, (duration/(duration + coloringDuration)), 1]
-        pathLayer?.addAnimation(colorAnimation, forKey: "fillColor")
+        
+        colorAnimation.values       = [UIColor.clear.cgColor, UIColor.clear.cgColor, textColor]
+        colorAnimation.keyTimes     = [0, (NSNumber(value: duration/(duration + coloringDuration))), 1]
+        pathLayer?.add(colorAnimation, forKey: "fillColor")
     }
     
     public func stopAnimation() {
@@ -133,14 +134,14 @@ public class VRMTextAnimator: NSObject {
     
     public func prepareForAnimation() {
         pathLayer?.removeAllAnimations()
-        setupPathLayerWithText(textToAnimate, fontName: fontName, fontSize: fontSize)
+        setupPathLayerWithText(text: textToAnimate, fontName: fontName, fontSize: fontSize)
         
         let pathAnimation       = CABasicAnimation(keyPath: "strokeEnd")
         pathAnimation.duration  = 1.0
         pathAnimation.fromValue = 0.0
         pathAnimation.toValue   = 1.0
-        pathAnimation.delegate  = self
-        pathLayer?.addAnimation(pathAnimation, forKey: "strokeEnd")
+        pathAnimation.delegate  = self as CAAnimationDelegate
+        pathLayer?.add(pathAnimation, forKey: "strokeEnd")
         
         pathLayer?.speed        = 0
         
@@ -151,11 +152,11 @@ public class VRMTextAnimator: NSObject {
     }
     
     // MARK: Animation delegate
-    public override func animationDidStart(anim: CAAnimation) {
+    public func animationDidStart(_ anim: CAAnimation) {
         self.delegate?.textAnimator(self, animationDidStart: anim)
     }
     
-    public override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
+    public func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
         self.delegate?.textAnimator(self, animationDidStop: anim)
     }
 
