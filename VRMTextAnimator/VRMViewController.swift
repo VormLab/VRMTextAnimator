@@ -33,7 +33,7 @@ class VRMViewController: UIViewController {
         didSet {
             startAnimationButton.layer.cornerRadius     = 8.0
             startAnimationButton.layer.borderWidth      = 1.0
-            startAnimationButton.layer.borderColor      = UIColor.whiteColor().CGColor
+            startAnimationButton.layer.borderColor      = UIColor.white.cgColor
             startAnimationButton.layer.masksToBounds    = true
         }
     }
@@ -41,7 +41,7 @@ class VRMViewController: UIViewController {
         didSet {
             stopAnimationButton.layer.cornerRadius      = 8.0
             stopAnimationButton.layer.borderWidth       = 1.0
-            stopAnimationButton.layer.borderColor       = UIColor.whiteColor().CGColor
+            stopAnimationButton.layer.borderColor       = UIColor.white.cgColor
             stopAnimationButton.layer.masksToBounds     = true
         }
     }
@@ -49,7 +49,7 @@ class VRMViewController: UIViewController {
         didSet {
             clearTextButton.layer.cornerRadius          = 8.0
             clearTextButton.layer.borderWidth           = 1.0
-            clearTextButton.layer.borderColor           = UIColor.whiteColor().CGColor
+            clearTextButton.layer.borderColor           = UIColor.white.cgColor
             clearTextButton.layer.masksToBounds         = true
         }
     }
@@ -65,7 +65,7 @@ class VRMViewController: UIViewController {
         updateButtons()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         view.layoutIfNeeded()
         initTextAnimator()
@@ -73,7 +73,7 @@ class VRMViewController: UIViewController {
         configureTapGesture()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         textAnimator = nil
     }
@@ -86,11 +86,11 @@ class VRMViewController: UIViewController {
     
     // MARK: Tap gesture
     func configureTapGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(VRMViewController.tap(_:)))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tap(_:)))
         view.addGestureRecognizer(tapGesture)
     }
     
-    func tap(gesture: UITapGestureRecognizer) {
+    @objc func tap(_ gesture: UITapGestureRecognizer) {
         view.endEditing(true)
     }
     
@@ -98,22 +98,22 @@ class VRMViewController: UIViewController {
     
     func updateUI() {
         textToAnimateTextField.placeholder      = textAnimator!.textToAnimate
-        fontSizeTextField.placeholder           = String(textAnimator!.fontSize)
+        fontSizeTextField.placeholder           = String(describing: textAnimator!.fontSize)
         if let animatorFontName = textAnimator?.fontName { chosenFontName = animatorFontName }
-        if let chosenFontIndex = UIFont.familyNames().indexOf(chosenFontName) {
+        if let chosenFontIndex = UIFont.familyNames.index(of: chosenFontName) {
             fontPicker.selectRow(chosenFontIndex, inComponent: 0, animated: true)
         }
     }
     
     func updateButtons() {
-        startAnimationButton.hidden     = isAnimating
-        stopAnimationButton.hidden      = !isAnimating
-        clearTextButton.hidden          = isAnimating
+        startAnimationButton.isHidden     = isAnimating
+        stopAnimationButton.isHidden      = !isAnimating
+        clearTextButton.isHidden          = isAnimating
     }
     
     // MARK: IBActions
     
-    @IBAction func didPressStartAnimationButton(sender: UIButton) {
+    @IBAction func didPressStartAnimationButton(_ sender: UIButton) {
         startAnimation()
     }
     
@@ -129,14 +129,14 @@ class VRMViewController: UIViewController {
     
     func updateTextAnimator() {
         textAnimator?.fontName      = chosenFontName
-        if let fontSizeText = fontSizeTextField.text where fontSizeText.characters.count > 0 {
+        if let fontSizeText = fontSizeTextField.text, fontSizeText.characters.count > 0 {
             textAnimator?.fontSize      = CGFloat((fontSizeText as NSString).floatValue)
-        } else if let placeholderText = fontSizeTextField.placeholder where placeholderText.characters.count > 0 {
+        } else if let placeholderText = fontSizeTextField.placeholder, placeholderText.characters.count > 0 {
             textAnimator?.fontSize      = CGFloat((placeholderText as NSString).floatValue)
         }
-        if let textToAnimateText = textToAnimateTextField.text where textToAnimateText.characters.count > 0 {
+        if let textToAnimateText = textToAnimateTextField.text, textToAnimateText.characters.count > 0 {
             textAnimator?.textToAnimate = textToAnimateText
-        } else if let placeholderText = textToAnimateTextField.placeholder where placeholderText.characters.count > 0 {
+        } else if let placeholderText = textToAnimateTextField.placeholder, placeholderText.characters.count > 0 {
             textAnimator?.textToAnimate = placeholderText
         }
         
@@ -160,20 +160,21 @@ class VRMViewController: UIViewController {
 // MARK: UIPickerView delegate & dataSource
 
 extension VRMViewController: UIPickerViewDelegate, UIPickerViewDataSource {
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return UIFont.familyNames().count
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return UIFont.familyNames.count
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        chosenFontName = UIFont.familyNames()[row]
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        chosenFontName = UIFont.familyNames[row]
     }
     
-    func pickerView(pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        let currentTitle    = UIFont.familyNames()[row]
-        let attributes      = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        let currentTitle    = UIFont.familyNames[row]
+        let attributes      = [NSAttributedStringKey.foregroundColor: UIColor.white]
         return NSAttributedString(string: currentTitle, attributes: attributes)
     }
 }
@@ -182,12 +183,12 @@ extension VRMViewController: UIPickerViewDelegate, UIPickerViewDataSource {
 
 extension VRMViewController: VRMTextAnimatorDelegate {
     
-    func textAnimator(textAnimator: VRMTextAnimator, animationDidStart animation: CAAnimation) {
+    func textAnimator(_ textAnimator: VRMTextAnimator, animationDidStart animation: CAAnimation) {
         isAnimating = true
         updateButtons()
     }
     
-    func textAnimator(textAnimator: VRMTextAnimator, animationDidStop animation: CAAnimation) {
+    func textAnimator(_ textAnimator: VRMTextAnimator, animationDidStop animation: CAAnimation) {
         isAnimating = false
         updateButtons()
     }
@@ -197,7 +198,7 @@ extension VRMViewController: VRMTextAnimatorDelegate {
 // MARK: UITextField delegate
 
 extension VRMViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
         return true
     }
